@@ -1,0 +1,134 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Orbitron", sans-serif;
+    background: url("/background.png") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+  }
+  
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+  }
+  
+  .login-box-wrapper {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+    text-align: center;
+    width: 500px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    text-align: center;
+    width: 350px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+  }
+  
+  .login-box h2 {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: cyan;
+    text-shadow: 0 0 10px cyan;
+  }
+  
+  .login-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    transition: 0.3s;
+  }
+  
+  .login-box input:focus {
+    outline: none;
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 10px cyan;
+  }
+  
+  .password-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .password-container input {
+    width: 100%;
+    padding-right: 12px;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    color: white;
+  }
+  
+  .toggle-password:hover {
+    color: cyan;
+  }
+  
+  #remember-checkbox {
+    width: 80px;
+    height: 18px;
+    accent-color: rgb(255, 145, 0);
+    cursor: pointer;
+  }
+  .remember-me input {
+    margin-right: 8x;
+  }
+  
+  .login-box button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, black, cyan);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+    box-shadow: 0 0 15px cyan;
+  }
+  
+  .login-box button:hover {
+    background: linear-gradient(90deg, cyan, black);
+    box-shadow: 0 0 20px cyan;
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px;
+  }
+  
