@@ -3,7 +3,6 @@ const router = express.Router();
 const { exec } = require("child_process");
 const pool = require("../config/database");
 
-// Función para sanitizar nombres de clústeres
 const formatClusterName = (name) => {
     return name
         .toLowerCase()       
@@ -11,7 +10,6 @@ const formatClusterName = (name) => {
         .replace(/^-+|-+$/g, "");
 };
 
-// 🚀 1️⃣ CREAR UN CLÚSTER (POST /api/clusters/create)
 router.post("/create", async (req, res) => {
     let { name, size } = req.body;
 
@@ -41,7 +39,6 @@ router.post("/create", async (req, res) => {
     }
 });
 
-// 🚀 2️⃣ LISTAR TODOS LOS CLÚSTERES (GET /api/clusters)
 router.get("/", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM clusters");
@@ -52,7 +49,6 @@ router.get("/", async (req, res) => {
     }
 });
 
-// 🚀 3️⃣ ESCALAR UN CLÚSTER (POST /api/clusters/scale)
 router.post("/scale", async (req, res) => {
     const { id, replicas } = req.body;
 
@@ -79,7 +75,6 @@ router.post("/scale", async (req, res) => {
     }
 });
 
-// 🚀 4️⃣ ELIMINAR UN CLÚSTER (DELETE /api/clusters/:id)
 router.delete("/:id", async (req, res) => {
     const { id } = req.params;
 

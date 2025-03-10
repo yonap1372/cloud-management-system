@@ -7,7 +7,7 @@ function Clusters() {
   const [clusters, setClusters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [scaling, setScaling] = useState(null); // Estado para mostrar qué clúster está escalando
+  const [scaling, setScaling] = useState(null);
 
   useEffect(() => {
     fetchClusters();
@@ -32,7 +32,7 @@ function Clusters() {
       return;
     }
 
-    setScaling(id); // Marcar que se está escalando
+    setScaling(id);
     try {
       await scaleCluster(id, newReplicas);
       setClusters((prev) =>
@@ -43,7 +43,7 @@ function Clusters() {
     } catch (err) {
       setError("⚠️ Error al escalar clúster.");
     } finally {
-      setScaling(null); // Terminar estado de escalado
+      setScaling(null);
     }
   };
 

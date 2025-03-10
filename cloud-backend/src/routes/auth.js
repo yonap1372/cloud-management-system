@@ -6,7 +6,6 @@ const pool = require("../config/database");
 const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET;
 
-// Registro de usuario
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -27,7 +26,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login de usuario
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 

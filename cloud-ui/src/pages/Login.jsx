@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { loginUser } from "../services/auth";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importar iconos de FontAwesome
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
 
 function Login() {
@@ -12,7 +12,6 @@ function Login() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Cargar email guardado si "Recuérdame" estaba activado
   useEffect(() => {
     const savedEmail = localStorage.getItem("rememberedEmail");
     if (savedEmail) {

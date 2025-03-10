@@ -30,7 +30,6 @@ router.post("/", async (req, res) => {
     }
 });
 
-// 🚀 3️⃣ ELIMINAR UN USUARIO (DELETE /api/users/:id)
 router.delete("/:id", async (req, res) => {
     const { id } = req.params;
     try {

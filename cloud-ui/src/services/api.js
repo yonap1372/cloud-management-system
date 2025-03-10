@@ -15,22 +15,18 @@ const socket = io(SOCKET_URL, {
   reconnectionDelay: 2000
 });
 
-// 📡 🔥 WebSocket para métricas en tiempo real
 export const getMetricsLive = (callback) => {
   socket.on("metrics", callback);
 };
 
-// 📡 🔥 WebSocket para cambios en la escala de clústeres
 export const listenToClusterScaling = (callback) => {
   socket.on("escalado", callback);
 };
 
-// 📡 🔥 WebSocket para cambios en la gestión de usuarios (opcional)
 export const listenToUserUpdates = (callback) => {
   socket.on("usuarios", callback);
 };
 
-// ✅ Obtener estado del sistema
 export const getSystemStatus = async () => {
   try {
     const response = await api.get("/status");
@@ -41,7 +37,6 @@ export const getSystemStatus = async () => {
   }
 };
 
-// ✅ Obtener lista de clústeres
 export const getClusters = async () => {
   try {
     const response = await api.get("/clusters");
@@ -52,7 +47,6 @@ export const getClusters = async () => {
   }
 };
 
-// ✅ Escalar clúster
 export const scaleCluster = async (id, replicas) => {
   if (!id || replicas === undefined || replicas === null || replicas < 1) {
     console.error("⚠️ Error: ID y número de réplicas válidos son obligatorios.");
@@ -70,7 +64,6 @@ export const scaleCluster = async (id, replicas) => {
   }
 };
 
-// ✅ Obtener lista de usuarios
 export const getUsers = async () => {
   try {
     const response = await api.get("/users");
@@ -81,7 +74,6 @@ export const getUsers = async () => {
   }
 };
 
-// ✅ Agregar nuevo usuario
 export const addUser = async (userData) => {
   if (!userData.name || !userData.email || !userData.role) {
     console.error("⚠️ Error: Todos los campos del usuario son obligatorios.");
@@ -99,7 +91,6 @@ export const addUser = async (userData) => {
   }
 };
 
-// ✅ Eliminar usuario
 export const deleteUser = async (id) => {
   if (!id) {
     console.error("⚠️ Error: ID de usuario es obligatorio para eliminar.");
