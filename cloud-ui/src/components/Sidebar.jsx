@@ -14,10 +14,10 @@ function Sidebar() {
     <div className="sidebar">
       <h2 className="sidebar-title">Cloud Manager</h2>
       <ul>
-        <li><FaHome /> Inicio</li>
-        <li><FaServer /> Clústeres</li>
-        <li><FaUsers /> Usuarios</li>
-        <li><FaCog /> Configuración</li>
+        <li onClick={() => navigate("/dashboard")}><FaHome /> Inicio</li>
+        <li onClick={() => navigate("/clusters")}><FaServer /> Clústeres</li>
+        <li onClick={() => navigate("/users")}><FaUsers /> Usuarios</li>
+        <li onClick={() => navigate("/settings")}><FaCog /> Configuración</li>
         <li onClick={handleLogout} className="logout"><FaSignOutAlt /> Cerrar Sesión</li>
       </ul>
     </div>
