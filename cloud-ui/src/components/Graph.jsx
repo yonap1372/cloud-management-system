@@ -7,11 +7,11 @@ function Graph({ title, dataKey, data }) {
       <h3>{title}</h3>
       <ResponsiveContainer width="100%" height={250}>
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#444" />
           <XAxis dataKey="time" stroke="white" />
           <YAxis stroke="white" />
           <Tooltip />
-          <Line type="monotone" dataKey={dataKey} stroke="cyan" strokeWidth={2} />
+          <Line type="monotone" dataKey={dataKey} stroke="#00bcd4" strokeWidth={2} dot={false} />
         </LineChart>
       </ResponsiveContainer>
     </div>

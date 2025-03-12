@@ -9,19 +9,25 @@ const axios = require("axios");
 const authRoutes = require("./routes/auth");
 const clusterRoutes = require("./routes/cluster");
 const statusRoutes = require("./routes/status");
-const protectedRoutes = require("./routes/protected");
 const usersRoutes = require("./routes/users");
+const scalingRoutes = require("./routes/scaling");
+const scalingHistoryRoutes = require("./routes/scalingHistory");
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.FRONTEND_URL || "http://localhost:5173",
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   }
 });
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json());
 
 const PROMETHEUS_URL = "http://10.43.70.249:9090/api/v1/query";
@@ -50,19 +56,38 @@ const fetchMetrics = async () => {
   }
 };
 
-const scaleCluster = async (newReplicas) => {
+const logScalingEvent = async (clusterName, previousReplicas, newReplicas) => {
+  try {
+    const result = await pool.query(
+      "INSERT INTO scaling_history (cluster_name, previous_replicas, new_replicas) VALUES ($1, $2, $3)",
+      [clusterName, previousReplicas, newReplicas]
+    );
+
+    console.log(`📌 Historial registrado: ${clusterName} pasó de ${previousReplicas} a ${newReplicas} réplicas.`);
+  } catch (error) {
+    console.error("⚠️ Error registrando historial de escalado:", error);
+  }
+};
+
+
+const scaleCluster = async (clusterName, newReplicas) => {
   if (newReplicas !== replicasActuales) {
-    exec(`kubectl scale deployment cluster1 --replicas=${newReplicas}`, (error, stdout, stderr) => {
+    exec(`kubectl scale deployment ${clusterName} --replicas=${newReplicas}`, async (error, stdout, stderr) => {
       if (error) {
         console.error("❌ Error al escalar:", stderr);
       } else {
-        console.log(`✅ Clúster escalado a ${newReplicas} réplicas`);
+        console.log(`✅ Clúster ${clusterName} escalado a ${newReplicas} réplicas`);
+
+        await logScalingEvent(clusterName, replicasActuales, newReplicas);
+
         replicasActuales = newReplicas;
-        io.emit("escalado", { message: `Clúster escalado a ${newReplicas} réplicas` });
+        io.emit("escalado", { message: `Clúster ${clusterName} escalado a ${newReplicas} réplicas` });
+        io.emit("notification", { type: "ESCALADO", message: `Se escaló ${clusterName} a ${newReplicas} réplicas.` });
       }
     });
   }
 };
+
 
 setInterval(async () => {
   const { cpu } = await fetchMetrics();
@@ -102,6 +127,7 @@ io.on("connection", (socket) => {
     if (alertaActual !== ultimaAlerta) {
       ultimaAlerta = alertaActual;
       socket.emit("alert", { message: alertaActual });
+      io.emit("notification", { type: "ALERTA", message: alertaActual });
     }
   };
 
@@ -117,8 +143,9 @@ io.on("connection", (socket) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/clusters", clusterRoutes);
 app.use("/api/status", statusRoutes);
-app.use("/api", protectedRoutes);
 app.use("/api/users", usersRoutes);
+app.use("/api/scaling", scalingRoutes);
+app.use("/api/scaling-history", scalingHistoryRoutes);
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {

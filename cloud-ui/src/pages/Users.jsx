@@ -7,7 +7,8 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [newUser, setNewUser] = useState({ name: "", email: "", role: "user" });
+  const [newUser, setNewUser] = useState({ name: "", email: "", password: "", role: "user" });
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchUsers();
@@ -28,7 +29,7 @@ function Users() {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
-    if (!newUser.name || !newUser.email || !newUser.role) {
+    if (!newUser.name || !newUser.email || !newUser.password || !newUser.role) {
       setError("⚠️ Todos los campos son obligatorios.");
       return;
     }
@@ -36,7 +37,7 @@ function Users() {
     try {
       await addUser(newUser);
       fetchUsers();
-      setNewUser({ name: "", email: "", role: "user" });
+      setNewUser({ name: "", email: "", password: "", role: "user" });
     } catch (err) {
       setError("⚠️ Error al agregar usuario.");
     }
@@ -60,6 +61,14 @@ function Users() {
         {error && <p className="error">{error}</p>}
         {loading ? <p>Cargando...</p> : null}
 
+        <input
+          type="text"
+          placeholder="Buscar usuario..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-bar"
+        />
+
         <form className="add-user-form" onSubmit={handleAddUser}>
           <input
             type="text"
@@ -73,6 +82,13 @@ function Users() {
             placeholder="Correo electrónico"
             value={newUser.email}
             onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={newUser.password}
+            onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
             required
           />
           <select
@@ -96,16 +112,20 @@ function Users() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>
-                  <button onClick={() => handleDeleteUser(user.id)}>🗑 Eliminar</button>
-                </td>
-              </tr>
-            ))}
+            {users
+              .filter((user) =>
+                user.name.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((user) => (
+                <tr key={user.id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.role}</td>
+                  <td>
+                    <button onClick={() => handleDeleteUser(user.id)}>🗑 Eliminar</button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

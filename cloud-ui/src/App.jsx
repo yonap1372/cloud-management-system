@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-import Clusters from "./pages/Clusters.jsx";
-import Users from "./pages/Users.jsx";
-import Settings from "./pages/Settings.jsx";
-import PrivateRoute from "./components/PrivateRoute.jsx";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Clusters from "./pages/Clusters";
+import Users from "./pages/Users";
+import ScalingHistory from "./components/ScalingHistory";
+import PrivateRoute from "./components/PrivateRoute";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/clusters" element={<Clusters />} />
           <Route path="/users" element={<Users />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/scaling-history" element={<ScalingHistory />} />
         </Route>
       </Routes>
     </Router>

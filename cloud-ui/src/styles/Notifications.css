@@ -1,0 +1,27 @@
+.notifications {
+    background: #222;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .notifications ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .notifications li {
+    padding: 5px;
+    border-left: 5px solid;
+    margin-bottom: 5px;
+  }
+  
+  .notifications .alerta {
+    border-color: red;
+  }
+  
+  .notifications .escalado {
+    border-color: blue;
+  }
+  

@@ -19,11 +19,10 @@ function DashboardMain() {
       });
 
       setMetrics((prev) => [
-        ...prev.slice(-30), // Mantener solo las últimas 30 lecturas
+        ...prev.slice(-30),
         { time: newTime, cpu: Number(newData.cpu) || 0, ram: Number(newData.ram) || 0, network: Number(newData.network) || 0 }
       ]);
 
-      // Alertas mejoradas con múltiples niveles
       if (newData.cpu > 90) {
         setAlert("🚨 CRÍTICO: CPU extremadamente alta (> 90%)");
       } else if (newData.cpu > 80) {
@@ -57,7 +56,7 @@ function DashboardMain() {
       <div className="graphs">
         <Graph title="Uso de CPU (%)" dataKey="cpu" data={metrics} />
         <Graph title="Uso de RAM (%)" dataKey="ram" data={metrics} />
-        <Graph title="Tráfico de Red (%)" dataKey="network" data={metrics} />
+        <Graph title="Tráfico de Red (MB)" dataKey="network" data={metrics} />
       </div>
     </div>
   );

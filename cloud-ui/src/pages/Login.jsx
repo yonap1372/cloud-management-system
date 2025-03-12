@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { loginUser } from "../services/auth";
+import { login } from "../services/auth"; // ✅ Cambiar `loginUser` por `login`
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
@@ -24,13 +24,21 @@ function Login() {
     e.preventDefault();
     setError(null);
     try {
-      await loginUser(email, password);
-      if (rememberMe) {
-        localStorage.setItem("rememberedEmail", email);
+      const result = await login(email, password); // ✅ Usar `login` de `auth.js`
+      
+      if (result && result.token) {
+        localStorage.setItem("token", result.token);
+        
+        if (rememberMe) {
+          localStorage.setItem("rememberedEmail", email);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+        }
+
+        navigate("/dashboard");
       } else {
-        localStorage.removeItem("rememberedEmail");
+        setError("⚠️ Credenciales incorrectas o error en el servidor");
       }
-      navigate("/dashboard");
     } catch (err) {
       setError(err.error || "Error de autenticación");
     }
@@ -43,41 +51,37 @@ function Login() {
           <h2>Login</h2>
           {error && <p className="error">{error}</p>}
           <form onSubmit={handleLogin}>
-            <input 
-              type="email" 
-              placeholder="User Name" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
-            /><br/>
+            <input
+              type="email"
+              placeholder="Correo Electrónico"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            /><br />
             
             <div className="password-container">
-              <input 
-                type={showPassword ? "text" : "password"} 
-                placeholder="Password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                required 
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
-              <span 
-                className="toggle-password"
-                onClick={() => setShowPassword(!showPassword)}
-              >
+              <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
 
             <div className="remember-me">
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 id="remember-checkbox"
-                className="custom-checkbox"
-                checked={rememberMe} 
-                onChange={() => setRememberMe(!rememberMe)} 
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
               />
-              <label htmlFor="remember">Remember me</label>
+              <label htmlFor="remember-checkbox">Recuérdame</label>
             </div>
-            <button type="submit">Go</button>
+            <button type="submit">Ingresar</button>
           </form>
         </div>
       </div>

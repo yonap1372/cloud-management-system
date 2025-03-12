@@ -1,10 +1,10 @@
-const express = require('express');
-const authMiddleware = require('../middleware/authMiddleware');
-
+const express = require("express");
 const router = express.Router();
+const authMiddleware = require("../middleware/authMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
 
-router.get('/protected-route', authMiddleware, (req, res) => {
-  res.json({ message: 'Acceso autorizado', user: req.user });
+router.get("/admin", authMiddleware, roleMiddleware("admin"), (req, res) => {
+    res.json({ message: "Bienvenido, administrador." });
 });
 
 module.exports = router;
